@@ -71,20 +71,20 @@ async fn main() -> anyhow::Result<()> {
 }
 
 async fn handler(State(state): State<HyState>, req: Request<Body>) -> ResultResponse<Response<Body>> {
-    let path = req.uri().path();
     if req.method() != Method::GET {
         return Ok(Response::builder()
             .status(StatusCode::METHOD_NOT_ALLOWED)
             .body(Body::empty())?);
-    } else if path == "/"
-        || path.starts_with("/resources")
-        || path.starts_with("/skyblock/auctions")
-        || path.starts_with("/skyblock/bazaar")
-        || path.starts_with("/skyblock/auctions_ended")
-        || path.starts_with("/skyblock/news")
-    {
-        return Ok(Response::builder().status(StatusCode::FORBIDDEN).body(Body::empty())?);
     }
+    //  else if path == "/"
+    //     || path.starts_with("/resources")
+    //     || path.starts_with("/skyblock/auctions")
+    //     || path.starts_with("/skyblock/bazaar")
+    //     || path.starts_with("/skyblock/auctions_ended")
+    //     || path.starts_with("/skyblock/news")
+    // {
+    //     return Ok(Response::builder().status(StatusCode::FORBIDDEN).body(Body::empty())?);
+    // }
 
     let mut conn = state.redis.get_connection()?;
 
