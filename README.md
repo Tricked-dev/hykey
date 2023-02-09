@@ -10,6 +10,11 @@ A hypixel api proxy that caches to redis and handles rate limits.
 - Handles rate limits
 - Removes the need for api keys
 
+## Public instance
+
+- [hy.tricked.dev](https://hy.tricked.dev)
+  - please dont break or abuse it lol the key only has a 60 requests per minute limit
+
 ## Setup
 
 You need to have a redis server running on your machine. I recommend using dragonflydb the docker-compose file in this repository will start a redis server for you.
