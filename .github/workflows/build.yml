@@ -6,6 +6,8 @@ on:
     paths:
       - "**.rs"
       - "**.toml"
+      - "Dockerfile.prebuild"
+      - "Dockerfile"
   workflow_dispatch:
 
 env:

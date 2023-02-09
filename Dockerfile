@@ -19,7 +19,7 @@ RUN cargo install --no-default-features --path .
 
 # 2: Copy the exe and extra files ("static") to an empty Docker image
 FROM debian:stable-slim
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y curl libssl3 && rm -rf /var/lib/apt/lists/*
 
 RUN  addgroup --gid 1000 runner && \
     adduser --uid 1000 --home /data --ingroup runner --disabled-password runner
