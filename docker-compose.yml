@@ -21,7 +21,7 @@ services:
     image: ghcr.io/tricked-dev/hykey:latest
     restart: unless-stopped
     environment:
-      - API_KEY=792d6248-3a24-447f-be4a-31157a182620
+      - API_KEY=<TOKEN>
       - RUST_LOG=hykey=debug
     networks:
       - redis
