@@ -1,0 +1,35 @@
+[package]
+name = "hykey"
+version = "0.1.0"
+edition = "2021"
+authors = ["Tricked-dev <tricked@tricked.pro>"]
+repository = "https://github.com/tricked-dev/hykey"
+documentation = "https://docs.rs/hykey"
+readme = "README.md"
+license = "Apache-2.0"
+homepage = "https://lb.tricked.pro"
+categories = ["command-line-utilities"]
+exclude = [".vscode/settings.json", "makefile"]
+
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1
+incremental = true
+opt-level = 's'
+panic = 'abort'
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+anyhow = "1.0.69"
+axum = "0.6.4"
+clap = { version = "4.1.4", features = ["derive", "env", "cargo"] }
+hyper = { version = "0.14", features = ["full"] }
+hyper-tls = "0.5.0"
+once_cell = { version = "1.17.0", features = ["parking_lot"] }
+parking_lot = { version = "0.12.1", features = ["serde"] }
+redis = "0.22.3"
+tokio = { version = "1.0", features = ["full"] }
+tower = { version = "0.4", features = ["make"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

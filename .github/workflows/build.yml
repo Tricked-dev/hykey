@@ -1,0 +1,52 @@
+name: Build and upload artifacts.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "**.rs"
+      - "**.toml"
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: ""
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cargo Caching
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: install nightly
+        run: rustup toolchain install nightly && rustup component add rust-src --toolchain nightly
+      # - name: Build
+      #   run: cargo build --release --no-default-features
+      # - run: cp target/release/hykey .
+      - name: build
+        run: make br
+      - run: cp target/x86_64-unknown-linux-gnu/release/hykey .
+      - name: Build and push
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          registry: ghcr.io
+          image: "hykey"
+          dockerfile: Dockerfile.prebuild
+          tags: latest
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: hykey
+          path: ./hykey
+          if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
