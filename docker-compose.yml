@@ -17,16 +17,6 @@ services:
     volumes:
       - "./dragonfly_data:/data"
     restart: unless-stopped
-  hykey:
-    image: ghcr.io/tricked-dev/hykey:latest
-    restart: unless-stopped
-    environment:
-      - API_KEY=<TOKEN>
-      - RUST_LOG=hykey=debug
-    networks:
-      - redis
-    ports:
-      - '4000:4000'
 networks:
   redis:
     driver: bridge
