@@ -11,7 +11,22 @@ services:
       - "--dir=/data"
       - "--dbfilename=dump.rdb"
     ports:
-      - '6379:6379'
+      - "6379:6379"
+    networks:
+      - redis
     volumes:
       - "./dragonfly_data:/data"
     restart: unless-stopped
+  hykey:
+    image: ghcr.io/tricked-dev/hykey:latest
+    restart: unless-stopped
+    environment:
+      - API_KEY=792d6248-3a24-447f-be4a-31157a182620
+      - RUST_LOG=hykey=debug
+    networks:
+      - redis
+    ports:
+      - '4000:4000'
+networks:
+  redis:
+    driver: bridge

@@ -25,11 +25,15 @@ anyhow = "1.0.69"
 axum = "0.6.4"
 clap = { version = "4.1.4", features = ["derive", "env", "cargo"] }
 hyper = { version = "0.14", features = ["full"] }
-hyper-tls = "0.5.0"
+hyper-rustls = { version = "0.23.2", default-features = false, features = [
+    "http2",
+    "rustls-native-certs",
+    "tokio-runtime"
+] }
 once_cell = { version = "1.17.0", features = ["parking_lot"] }
 parking_lot = { version = "0.12.1", features = ["serde"] }
 redis = "0.22.3"
-tokio = { version = "1.0", features = ["full"] }
+tokio = { version = "1.0", features = ["rt", "rt-multi-thread", 'macros'] }
 tower = { version = "0.4", features = ["make"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }

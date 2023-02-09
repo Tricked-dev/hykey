@@ -8,7 +8,7 @@ use axum::{
 };
 use clap::Parser;
 use hyper::{client::HttpConnector, Body, Method, StatusCode};
-use hyper_tls::HttpsConnector;
+use hyper_rustls::HttpsConnector;
 use once_cell::sync::Lazy;
 use ratelimit::HySmartLimiter;
 use redis::Commands;
@@ -55,7 +55,11 @@ async fn main() -> anyhow::Result<()> {
         .init();
     let cli = Cli::parse();
 
-    let https = HttpsConnector::new();
+    let https = hyper_rustls::HttpsConnectorBuilder::new()
+        .with_native_roots()
+        .https_only()
+        .enable_http2()
+        .build();
     let client: Client = hyper::Client::builder().build::<_, hyper::Body>(https);
     let redis = redis::Client::open(cli.redis_url)?;
 
@@ -76,17 +80,8 @@ async fn handler(State(state): State<HyState>, req: Request<Body>) -> ResultResp
             .status(StatusCode::METHOD_NOT_ALLOWED)
             .body(Body::empty())?);
     }
-    //  else if path == "/"
-    //     || path.starts_with("/resources")
-    //     || path.starts_with("/skyblock/auctions")
-    //     || path.starts_with("/skyblock/bazaar")
-    //     || path.starts_with("/skyblock/auctions_ended")
-    //     || path.starts_with("/skyblock/news")
-    // {
-    //     return Ok(Response::builder().status(StatusCode::FORBIDDEN).body(Body::empty())?);
-    // }
 
-    let mut conn = state.redis.get_connection()?;
+    let mut conn = state.redis.get_connection().expect("redis connection failed");
 
     let full_path = req
         .uri()
