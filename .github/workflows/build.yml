@@ -6,6 +6,7 @@ on:
     paths:
       - "**.rs"
       - "**.toml"
+  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
@@ -33,7 +34,7 @@ jobs:
       #   run: cargo build --release --no-default-features
       # - run: cp target/release/hykey .
       - name: build
-        run: make br
+        run: cargo +nightly build -Z build-std=std,panic_abort --target x86_64-unknown-linux-gnu --release
       - run: cp target/x86_64-unknown-linux-gnu/release/hykey .
       - name: Build and push
         uses: mr-smithers-excellent/docker-build-push@v5
