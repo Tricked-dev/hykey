@@ -32,11 +32,7 @@ impl From<hyper::Error> for ResponseError {
 
 impl axum::response::IntoResponse for ResponseError {
     fn into_response(self) -> axum::response::Response {
-        (
-            axum::http::StatusCode::INTERNAL_SERVER_ERROR,
-            self.0.to_string(),
-        )
-            .into_response()
+        (axum::http::StatusCode::INTERNAL_SERVER_ERROR, self.0.to_string()).into_response()
     }
 }
 
